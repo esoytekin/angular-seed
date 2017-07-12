@@ -1,0 +1,168 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  	<parent>
+		<groupId>com.kron.netright.authentication</groupId>
+		<artifactId>authentication</artifactId>
+		<version>1.0</version>
+	</parent>
+  
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>seed-project-ui</artifactId>
+  <packaging>war</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>seed-project-ui Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+	<properties>
+		<deploy.target>webapp</deploy.target>
+	</properties>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${netright.servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kron.netright.kernel</groupId>
+			<artifactId>kernel-util</artifactId>
+			<version>${netright.kernel.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.kron.netright.kernel</groupId>
+			<artifactId>kernel-component</artifactId>
+			<version>${netright.kernel.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.kron.netright.kernel</groupId>
+			<artifactId>kernel-api</artifactId>
+			<version>${netright.kernel.version}</version>
+			<scope>provided</scope>
+		</dependency>
+  </dependencies>
+  <build>
+    <finalName>seed-project-ui</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+
+					<webResources>
+
+						<!-- Filter translation strings -->
+						<resource>
+							<directory>src/main/webapp</directory>
+							<filtering>true</filtering>
+							<includes>
+								<include>index.html</include>
+							</includes>
+						</resource>
+
+					</webResources>
+
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>exploded</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			            <!-- Pre-cache Angular templates with maven-angular-plugin -->
+            <plugin>
+                <groupId>com.keithbranton.mojo</groupId>
+                <artifactId>angular-maven-plugin</artifactId>
+                <version>0.3.2</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>html2js</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <sourceDir>${basedir}/src/main/webapp/app/</sourceDir>
+                    <include>**/*.html</include>
+                    <target>${basedir}/src/main/webapp/generated/templates-main/templates.js</target>
+                    <prefix>app</prefix>
+                </configuration>
+            </plugin>
+			
+
+			<!-- JS/CSS Minification Plugin -->
+			<plugin>
+				<groupId>com.samaxes.maven</groupId>
+				<artifactId>minify-maven-plugin</artifactId>
+				<version>1.7.5</version>
+				<executions>
+					<execution>
+						<id>default-cli</id>
+						<configuration>
+							<charset>UTF-8</charset>
+
+							<webappSourceDir>${project.build.directory}/${project.build.finalName}</webappSourceDir>
+
+							<cssSourceDir>/</cssSourceDir>
+							<cssTargetDir>/</cssTargetDir>
+							<cssFinalFile>${project.build.finalName}.css</cssFinalFile>
+
+							<cssSourceIncludes>
+								<cssSourceInclude>app/**/*.css</cssSourceInclude>
+							</cssSourceIncludes>
+
+							<jsSourceDir>/</jsSourceDir>
+							<jsTargetDir>/</jsTargetDir>
+							<jsFinalFile>${project.build.finalName}.js</jsFinalFile>
+
+                            <jsSourceFiles>
+                                <jsSourceFile>license.txt</jsSourceFile>
+                            </jsSourceFiles>
+
+
+							<jsSourceIncludes>
+								<jsSourceInclude>app/**/*.js</jsSourceInclude>
+								<jsSourceInclude>generated/**/*.js</jsSourceInclude>
+							</jsSourceIncludes>
+
+							<!-- Do not minify and include tests -->
+							<jsSourceExcludes>
+								<jsSourceExclude>**/*.test.js</jsSourceExclude>
+							</jsSourceExcludes>
+							<jsEngine>CLOSURE</jsEngine>
+
+							<!-- Disable warnings for JSDoc annotations -->
+							<closureWarningLevels>
+								<misplacedTypeAnnotation>OFF</misplacedTypeAnnotation>
+								<nonStandardJsDocs>OFF</nonStandardJsDocs>
+							</closureWarningLevels>
+
+						</configuration>
+						<goals>
+							<goal>minify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+		</plugins>
+  </build>
+</project>

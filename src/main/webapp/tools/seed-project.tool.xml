@@ -1,0 +1,9 @@
+<tool>
+	<id>netright.seed-project</id>
+	<name>Seed Project</name>
+	<desc>Seed Project Gui</desc>
+	<catalog>Seed</catalog>
+	<functions>
+		<function>netright.nv.read</function>
+	</functions>
+</tool>
