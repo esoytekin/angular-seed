@@ -4,9 +4,6 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-	<listener>
-		<listener-class>com.kron.netright.kernel.util.ToolListener</listener-class>
-	</listener>
     <servlet>
     	<servlet-name>seedServlet</servlet-name>
     	<servlet-class>com.kron.netright.kernel.seed.server.SeedServlet</servlet-class>
